@@ -1,28 +1,37 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import Home from './pages/Home'
+import Products from './pages/Products'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Cart from './pages/Cart'
+import { CartProvider, useCart } from './CartContext'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function Layout(){
+  const { count } = useCart()
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen flex flex-col bg-green-50">
+      <Navbar cartCount={count} />
+      <main className="flex-1">
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="/produk" element={<Products />} />
+          <Route path="/tentang" element={<About />} />
+          <Route path="/kontak" element={<Contact />} />
+          <Route path="/keranjang" element={<Cart />} />
+        </Routes>
+      </main>
+      <Footer />
+      <a href="https://wa.me/6281234567890" target="_blank" rel="noreferrer" className="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-green-700 active:scale-95 transition">Chat WhatsApp</a>
     </div>
   )
 }
 
-export default App
+export default function App(){
+  return (
+    <CartProvider>
+      <Layout />
+    </CartProvider>
+  )
+}
